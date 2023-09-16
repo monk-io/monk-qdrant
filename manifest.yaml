@@ -1,0 +1,36 @@
+---
+namespace: qdrant
+
+base:
+  defines: runnable
+  metadata:
+    website: https://qdrant.tech/
+    name: Qdrant
+    publisher: monk.io
+    icon: https://qdrant.tech/images/logo_with_text.svg
+    description: |
+      Qdrant is a vector database & vector similarity search engine. It deploys as an API service providing search for the nearest high-dimensional vectors
+    source: https://github.com/qdrant/qdrant
+    version: 1.0
+    tags: search, search-engine, machine-learning, neural-network, matching, nearest-neighbor-search, image-search, recommender-system, approximate-nearest-neighbor-search, search-engines, similarity-search, knn-algorithm, mlops, hnsw, vector-search, vector-database, neural-search, vector-search-engine, embeddings-similarity
+    private: true
+  containers:
+    qdrant:
+      image: qdrant/qdrant
+      image-tag: latest
+
+server:
+  defines: runnable
+  inherits: qdrant/base
+  metadata:
+    private: false
+  containers:
+    qdrant:
+      paths:
+        - <- `${monk-volume-path}/qdrant/storage:/qdrant/storage`
+  services:
+    qdrant:
+      container: qdrant
+      port: 6333
+      protocol: tcp
+      host-port: 6333
